@@ -50,7 +50,7 @@ session test (not neded here)
 
 	curl -i -H "Content-Type: application/json; charset=UTF-8" -X GET  http://localhost:8080/api/v1.0/session
 
-authentication token
+authentication token generator
 
 	curl -i -H "Content-Type: application/json; charset=UTF-8" -X GET  http://localhost:8080/api/v1.0/token -u Jason:abc
 
