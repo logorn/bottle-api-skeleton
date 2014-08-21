@@ -9,7 +9,6 @@ if not (2, 7, ) <= sys.version_info < (3, ):
 
 from setuptools import find_packages
 from distutils.core import setup
-from setuptools.command.test import test
 
 setup(
     name='bas',
@@ -49,7 +48,8 @@ setup(
         'itsdangerous',
         'Crypto',
         'requests',
-        'simplejson'
+        'simplejson',
+        'pycrypto'
     ],
     tests_require=['pytest', 'mock'],
     extras_require={

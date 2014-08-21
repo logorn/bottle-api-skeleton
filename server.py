@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import json
-import bottle
-from bottle import Bottle, request, redirect, response, HTTPError, route, run, request, abort, auth_basic, parse_auth
+from bottle import Bottle, response, HTTPError, request, abort, auth_basic, parse_auth
 from uuid import uuid4
 from pymongo import Connection
 from bson import json_util
 from beaker.middleware import SessionMiddleware
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, SignatureExpired
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, SignatureExpired, BadSignature
 import logging
 from Crypto import Random
 from Crypto.Cipher import AES
@@ -33,8 +32,6 @@ engine = SessionMiddleware(app, session_opts)
 SECRET_KEY = 'ffnnjeFpCtMd737NExBYhjodub3fpED2uZw03TNkhaA5cac3297f0d9f46e1gh3k83881ba0980215cd71e'
 SECRET_AUTH_KEY = 'ffnnjeFpCtMd737NExBYhjodub3fpED2'
 
-token_expiration = 120
-token_expiration = 86400 # 24h
 token_expiration = 31536000 # 365 J
 
 BS = 32
@@ -162,10 +159,7 @@ def put_document(id):
     entity = json.loads(data)
     if not entity.has_key('_id'):
         abort(400, 'No _id specified')
-    try:
-        db['documents'].save(entity)
-    except ValidationError as ve:
-        abort(400, str(ve))
+    db['documents'].save(entity)
         
 @app.route('/api/v1.0/documents', method='GET')
 @auth_token(check_token)
@@ -222,10 +216,7 @@ def post_signup():
             'username' : entitypost['username'],
             'password' : entitypost['password']
         }
-        try:
-            db['users'].save(entity)
-        except ValidationError as ve:
-            abort(400, str(ve))
+        db['users'].save(entity)
     else:
         return {'status': 'OK'}
 
