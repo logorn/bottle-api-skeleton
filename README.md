@@ -7,6 +7,8 @@ This is a skeleton framework to exploit the bottle in a restful context.
 I lean on the work of Miguel Grinberg.
 http://blog.miguelgrinberg.com/post/restful-authentication-with-flask
 
+The aim is to bottle covered the basics of setting up a project to rest beings piloted on android and other platform.
+
 **mongodb install for ubuntu**
 
     apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
