@@ -4,7 +4,7 @@
 import bottle
 from gevent import monkey
 monkey.patch_all()
-from server import engine
+from apps.bootstrap import engine
 
 
 bottle.debug(True)

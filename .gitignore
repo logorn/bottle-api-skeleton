@@ -1,0 +1,7 @@
+*.pyc
+*.db
+*.*~
+*.log
+cache/
+.idea/
+bas.egg-info/
