@@ -14,7 +14,7 @@ from Crypto.Cipher import AES
 import base64
 import hashlib
 
-logging.basicConfig(filename='logs/app.log',level=logging.DEBUG)
+logging.basicConfig(filename='data/logs/app.log',level=logging.DEBUG)
  
 connection = Connection('localhost', 27017)
 db = connection.mydatabase

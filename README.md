@@ -3,7 +3,7 @@ bottle-api-skeleton
 
 **bottle api skeleton**
 
-This is a skeleton framework to exploit the bottle in a restful context.
+This is a skeleton framework to exploit the bottle micro-framework in a restful context.
 I lean on the work of Miguel Grinberg.
 http://blog.miguelgrinberg.com/post/restful-authentication-with-flask
 
