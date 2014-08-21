@@ -14,7 +14,7 @@ from Crypto.Cipher import AES
 import base64
 import hashlib
 
-logging.basicConfig(filename='cli-server.log',level=logging.DEBUG)
+logging.basicConfig(filename='logs/app.log',level=logging.DEBUG)
  
 connection = Connection('localhost', 27017)
 db = connection.mydatabase
@@ -137,12 +137,10 @@ def post_document():
     entity = json.loads(data)
     if not entity.has_key('_id'):
         abort(400, 'No _id specified')
-    try:
-        result = db['documents'].find_one({'_id':entity['_id']})
-        if not result:
-            db['documents'].save(entity)
-    except ValidationError as ve:
-        abort(400, str(ve))
+
+    result = db['documents'].find_one({'_id':entity['_id']})
+    if not result:
+        db['documents'].save(entity)
 
 @app.route('/api/v1.0/documents/:id', method='PUT')
 @auth_token(check_token)

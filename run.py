@@ -1,3 +1,6 @@
+#/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import bottle
 from gevent import monkey
 monkey.patch_all()
