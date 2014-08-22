@@ -1,9 +1,8 @@
 bottle-api-skeleton
 ===================
 
-
-:Info: Minimal rest skeleton build on top of bottle micro-framework.
-:Author: Hugues MAILLET (maillet.hugues.dev@gmail.com)
+* Info: Minimal rest skeleton build on top of bottle micro-framework.
+* Author: Hugues MAILLET (maillet.hugues.dev@gmail.com)
 
 About bottle api skeleton
 -------------------------
