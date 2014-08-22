@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import json
+import bottle
 from bottle import Bottle, response, HTTPError, request, abort, auth_basic, parse_auth
 from uuid import uuid4
 from pymongo import Connection
@@ -25,8 +26,6 @@ session_opts = {
     'session.auto': True,
     'session.data_dir': "cache",
 }
-
-engine = SessionMiddleware(app, session_opts)
 
 SECRET_KEY = 'ffnnjeFpCtMd737NExBYhjodub3fpED2uZw03TNkhaA5cac3297f0d9f46e1gh3k83881ba0980215cd71e'
 SECRET_AUTH_KEY = 'ffnnjeFpCtMd737NExBYhjodub3fpED2'
