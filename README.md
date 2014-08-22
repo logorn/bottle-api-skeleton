@@ -25,7 +25,7 @@ The aim is to bottle covered the basics of setting up a project to rest beings p
 * token are encrypted
 
 Requirements
-============
+------------
 
 - ubuntu or debian distribution
 - mongodb install for ubuntu
@@ -111,7 +111,7 @@ delete document:
 	curl -H "Authorization: ApiAuth 9ebd226b1207473a92dc1f433343044e:MIc4xtC1/VdsX2N0JDS8y4HIIzC4IMBDf41+se6zZasTMeNaK7rqowRWUCYPFKfRcwnlO8bebLJ0AANRGhfkwxHl5j9QDDiV26RnJFCTrLgabmDnIanpCeCaT8S/epB6UBO5wd1o5ZSS09O2dgNBgte4vveYjnaBy5iY5K7RFQlPLzBYJbwpHh0s2DiPDExoQPOzvexZMgl5h4M+x+jQWUcnhIvneeVTjNdbjY+/dv2C+gNzXDnHv2G/BlJKt1K81NtxOMhM/uShOkrkTUDi480ZUCZzf2SB8n0kcfas43I69jj55KM4MeeUbgzllh6oPm7d5mNSIapze+hjsowH1q4TZ/Zatye4T5OiRECmZ8USi7RzYeH6plUKSEGWfiwnLwIkiOzigV+GBqqulS94yg==" -i -H "Content-Type: application/json; charset=UTF-8" -X DELETE http://localhost:8080/api/v1.0/documents/doc1
 
 Destroy bottle-api-skeleton environment
-=======================================
+---------------------------------------
 
     cd bottle-api-skeleton
     deactivate
