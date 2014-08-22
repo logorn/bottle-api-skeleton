@@ -27,8 +27,12 @@ The aim is to bottle covered the basics of setting up a project to rest beings p
 Requirements
 ------------
 
-- ubuntu or debian distribution
-- mongodb install for ubuntu
+* ubuntu or debian distribution
+* mongodb install for ubuntu    
+* curl
+
+Ubuntu MongoDb installation:
+----------------------------
 
     apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
     echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" | tee -a /etc/apt/sources.list.d/10gen.list
@@ -37,11 +41,9 @@ Requirements
     mongo --version
     sudo service mongodb start
     ps aux | grep mongo
-    
-- curl
 
-Installation:
--------------
+Installation application and dependencies:
+------------------------------------------
 
     cd ~
     git clone https://github.com/logorn/bottle-api-skeleton
