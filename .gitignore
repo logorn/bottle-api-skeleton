@@ -1,7 +1,7 @@
 *.pyc
 *.db
 *.*~
-*.log
+data/logs/*.log
 cache/
 .idea/
 bas.egg-info/
