@@ -10,9 +10,6 @@ monkey.patch_thread()
 if 'threading' in sys.modules:
     del sys.modules['threading']
 
-from apps.modules.rest.controllers.auth_controller import *
-from apps.modules.rest.controllers.document_controller import *
-
 class bootstrap:
 
     def __init__(self, host='localhost', port=8080):
@@ -23,18 +20,9 @@ class bootstrap:
         self._engine = SessionMiddleware(self._app, session_opts)
 
     def _route(self):
-        # auth controller class
-        self._app.route('/api/v1.0/signup', method='POST', callback=AuthController().post_signup)
-        self._app.route('/api/v1.0/login', method='POST', callback=AuthController().post_login)
-        self._app.route('/api/v1.0/token', callback=AuthController().get_auth_token)
-        self._app.route('/api/v1.0/basicauth', method='GET', callback=AuthController().get_basic_auth)
-        self._app.route('/api/v1.0/session', method='GET', callback=AuthController().get_session)
-        # document controller class
-        self._app.route('/api/v1.0/documents', method='POST', callback=DocumentController().post_document)
-        self._app.route('/api/v1.0/documents/:id', method='PUT', callback=DocumentController().put_document)
-        self._app.route('/api/v1.0/documents', method='GET', callback=DocumentController().get_all_document)
-        self._app.route('/api/v1.0/documents/:id', method='GET', callback=DocumentController().get_document)
-        self._app.route('/api/v1.0/documents/:id', method='DELETE', callback=DocumentController().del_document)
+        # routes manager
+        from apps.configs.routes import RoutesManager
+        self._app = RoutesManager(self._app).get_route()
 
     @app.error(404)
     def error404(self):
@@ -47,9 +35,7 @@ class bootstrap:
     def main(self):
         """Run the command
         """
-
         host = self._host
         port = self._port
-
         server = bootstrap(host, port)
         server.start()
