@@ -57,7 +57,22 @@ Installation application and dependencies:
 Run server:
 ----------
 
-    python bas.py
+default configuration:
+
+    bas-server
+    
+local configuration:
+
+    bas-server -c local
+    
+production configuration:
+    
+    bas-server -c production
+    
+Get server version:
+-------------------
+
+    bas-server -v
 
 Example curl command
 --------------------

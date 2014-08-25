@@ -1,14 +1,21 @@
 # -*- coding: utf-8 -*-
 
 from gevent import monkey
-monkey.patch_all()
-
+import sys
 from . import *
+
+monkey.patch_all()
+monkey.patch_thread()
+
+if 'threading' in sys.modules:
+    del sys.modules['threading']
+
 from apps.modules.rest.controllers.auth_controller import *
 from apps.modules.rest.controllers.document_controller import *
 
 class bootstrap:
-    def __init__(self, host, port):
+
+    def __init__(self, host='localhost', port=8080):
         self._host = host
         self._port = port
         self._app = app
@@ -36,3 +43,13 @@ class bootstrap:
     def start(self):
         bottle.debug(True)
         bottle.run(app=self._engine, host=self._host, port=self._port, reloader=True, server='gevent')
+
+    def main(self):
+        """Run the command
+        """
+
+        host = self._host
+        port = self._port
+
+        server = bootstrap(host, port)
+        server.start()

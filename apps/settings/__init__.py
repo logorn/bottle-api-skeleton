@@ -1,9 +1,11 @@
 import importlib
 
+__version__ = "0.1"
+
 class Settings(object):
 
     def __init__(self, settings_module):
-        settings_module = 'local'
+        settings_module = settings_module
         try:
             mod = importlib.import_module(
                 "." + settings_module,

@@ -10,10 +10,12 @@ if not (2, 7, ) <= sys.version_info < (3, ):
 from setuptools import find_packages
 from distutils.core import setup
 
+from apps.settings import __version__
+
 setup(
     name='bas',
-    version=1,
-    description='Ft core',
+    version=__version__,
+    description='Bas : Bottle api skeleton',
     long_description="\n\n".join(
         (
             open("README.md").read(),
@@ -32,7 +34,13 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
     ],
+    url='https://github.com/logorn/bottle-api-skeleton/',
     platforms=['Any'],
+    entry_points={
+        'console_scripts': [
+            'bas-server = apps.command.server:main'
+        ],
+    },
     packages=find_packages(
         exclude=['tests', 'tests.*', 'example', 'example.*', 'docs', 'docs.*']
     ),

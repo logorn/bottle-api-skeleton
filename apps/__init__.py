@@ -16,10 +16,6 @@ import inject
 
 from apps.settings import Settings
 
-settings = Settings('local')
-
-logging.basicConfig(filename='data/logs/app.log',level=logging.DEBUG)
-
 app = Bottle()
 
 session_opts = {
