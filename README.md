@@ -23,6 +23,7 @@ The aim is to bottle covered the basics of setting up a project to rest beings p
 * multithread using gevent
 * token are encrypted
 * use orm mongokit and extend pymongo
+* dependency injection support with inject
 
 Requirements
 ------------
