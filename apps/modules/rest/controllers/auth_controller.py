@@ -2,16 +2,10 @@
 
 from . import *
 
-from mongokit import Connection
-from library.bas.entity.users import Users
-conn = Connection()
-conn.register([Users])
-database = conn.mydatabase
-collection = database.users
-
 class AuthController(object):
 
-    def post_signup(self):
+    @inject.param('service_user')
+    def post_signup(self, service_user):
         """
         CREATE USER
         """
@@ -20,7 +14,7 @@ class AuthController(object):
             abort(400, 'No data received')
         entitypost = json.loads(data)
 
-        result = collection.Users.find_one({'username': entitypost['username'], 'password': entitypost['password']})
+        result = service_user.Users.repository.find_one({'username': entitypost['username'], 'password': entitypost['password']})
 
         if not result:
             entity = {
@@ -31,11 +25,12 @@ class AuthController(object):
                 'username' : entitypost['username'],
                 'password' : entitypost['password']
             }
-            collection.Users.save(entity)
+            service_user.Users.repository.save(entity)
         else:
             return {'status': 'OK'}
 
-    def post_login(self):
+    @inject.param('service_user')
+    def post_login(self, service_user):
         """
         LOGIN USER
         """
@@ -44,7 +39,9 @@ class AuthController(object):
         if not data:
             abort(400, 'No data received')
         entitypost = json.loads(data)
-        entity = collection.Users.find_one({'username': entitypost['username'], 'password': entitypost['password']})
+
+        entity = service_user.Users.repository.find_one({'username': entitypost['username'], 'password': entitypost['password']})
+
         if not entity:
             abort(404, 'No document with username = %s and password = %s' %  (entitypost['username'], entitypost['password']) )
         else:
@@ -56,10 +53,13 @@ class AuthController(object):
             abort(401, 'Invalid username or password')
 
     @auth_basic(check_pass)
-    def get_auth_token(self):
+    @inject.param('service_user')
+    def get_auth_token(self, service_user):
+
         auth = request.headers.get('Authorization')
         username, password = parse_auth(auth)
-        entity = collection.Users.find_one({'username': username, 'password': password})
+        entity = service_user.Users.repository.find_one({'username': username, 'password': password})
+
         base_hash = hashlib.sha224(entity['app_key'] + entity['private_key']).hexdigest()
         token = generate_auth_token(hashlib.sha224(base_hash).hexdigest())
         protected_token = token.decode('ascii') + ':' + entity['private_key'] + ':' + entity['public_key']

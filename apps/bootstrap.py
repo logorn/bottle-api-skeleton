@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from . import *
-from apps.modules.rest.controllers.auth_controller import *
-from apps.modules.rest.controllers.document_controller import  *
-
 from gevent import monkey
 monkey.patch_all()
+
+from . import *
+from apps.modules.rest.controllers.auth_controller import *
+from apps.modules.rest.controllers.document_controller import *
 
 class bootstrap:
     def __init__(self, host, port):

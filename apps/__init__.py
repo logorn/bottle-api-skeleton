@@ -12,6 +12,11 @@ from Crypto import Random
 from Crypto.Cipher import AES
 import base64
 import hashlib
+import inject
+
+from apps.settings import Settings
+
+settings = Settings('local')
 
 logging.basicConfig(filename='data/logs/app.log',level=logging.DEBUG)
 
@@ -28,19 +33,6 @@ SECRET_KEY = 'ffnnjeFpCtMd737NExBYhjodub3fpED2uZw03TNkhaA5cac3297f0d9f46e1gh3k83
 SECRET_AUTH_KEY = 'ffnnjeFpCtMd737NExBYhjodub3fpED2'
 
 token_expiration = 31536000 # 365 J
-
-# configuration
-MONGODB_HOST = 'localhost'
-MONGODB_PORT = 27017
-
-# connect to the database
-from mongokit import Connection as mongokiConnection
-from library.bas.entity.users import Users
-
-conn = mongokiConnection()
-conn.register([Users])
-database = conn.mydatabase
-UsersCollection = database.users
 
 BS = 32
 pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
@@ -62,14 +54,15 @@ def generate_auth_token(app_key, expiration = token_expiration):
     s = Serializer(SECRET_KEY, expires_in = expiration)
     return s.dumps({ 'id': app_key })
 
-def verify_auth_token(auth_public_key, auth_protected_token):
+@inject.param('service_user')
+def verify_auth_token(auth_public_key, auth_protected_token, service_user):
     s = Serializer(SECRET_KEY)
     raw_protected_data = decrypt(auth_protected_token, SECRET_AUTH_KEY)
     try:
         token, private_key, public_key = raw_protected_data.split(':',2)
     except:
         return None
-    entity = UsersCollection.Users.find_one({'public_key': public_key, 'private_key': private_key})
+    entity = service_user.Users.repository.find_one({'public_key': public_key, 'private_key': private_key})
     if not entity:
         return None
     if not (auth_public_key == entity['public_key']):
@@ -82,14 +75,15 @@ def verify_auth_token(auth_public_key, auth_protected_token):
         return None # invalid token
     return True
 
-def check_pass(username, password):
+@inject.param('service_user')
+def check_pass(username, password, service_user):
     auth = request.headers.get('Authorization')
     entity = None
     result = None
     if auth:
         username, password = parse_auth(auth)
     if not result:
-        entity = UsersCollection.Users.find_one({'username': username, 'password': password})
+        entity = service_user.Users.repository.find_one({'username': username, 'password': password})
         if not entity:
             return False
     return True
