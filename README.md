@@ -121,7 +121,6 @@ Destroy bottle-api-skeleton environment
     deactivate
     rmvirtualenv bottle-api-skeleton
 
-
 Feedback welcome!
 -----------------
 
