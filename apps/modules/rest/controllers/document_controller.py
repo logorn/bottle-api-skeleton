@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from . import *
+from mongokit import Connection
+from library.bas.entity.documents import Documents
+conn = Connection()
+conn.register([Documents])
+database = conn.mydatabase
+collection = database.documents
 
 class DocumentController(object):
 
@@ -16,16 +22,16 @@ class DocumentController(object):
         if not entity.has_key('_id'):
             abort(400, 'No _id specified')
 
-        result = db['documents'].find_one({'_id':entity['_id']})
+        result = collection.Documents.find_one({'_id':entity['_id']})
         if not result:
-            db['documents'].save(entity)
+            collection.Documents.save(entity)
 
     @auth_token(check_token)
     def put_document(self, id):
         """
         UPDATE DOCUMENT
         """
-        entity = db['documents'].find_one({'_id':id})
+        entity = collection.Documents.find_one({'_id':id})
         if not entity:
             abort(404, 'No document with id %s' % id)
         data = request.body.readline()
@@ -34,14 +40,14 @@ class DocumentController(object):
         entity = json.loads(data)
         if not entity.has_key('_id'):
             abort(400, 'No _id specified')
-        db['documents'].save(entity)
+        collection.Documents.save(entity)
 
     @auth_token(check_token)
     def get_all_document(self):
         """
         RETRIEVE ALL DOCUMENTS
         """
-        docs = db['documents'].find()
+        docs = collection.Documents.find()
         if not docs:
             abort(404, 'No document found')
         response.content_type = "application/json"
@@ -52,7 +58,7 @@ class DocumentController(object):
         """
         RETRIEVE DOCUMENT
         """
-        entity = db['documents'].find_one({'_id':id})
+        entity = collection.Documents.find_one({'_id':id})
         if not entity:
             abort(404, 'No document with id %s' % id)
         return entity
@@ -62,8 +68,8 @@ class DocumentController(object):
         """
         DELETE DOCUMENT
         """
-        entity = db['documents'].find_one({'_id':id})
+        entity = collection.Documents.find_one({'_id':id})
         if not entity:
             abort(404, 'No document with id %s' % id)
-        entity = db['documents'].remove({'_id':id})
+        entity = collection.Documents.remove({'_id':id})
         return entity

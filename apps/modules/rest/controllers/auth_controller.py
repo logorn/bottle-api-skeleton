@@ -2,6 +2,13 @@
 
 from . import *
 
+from mongokit import Connection
+from library.bas.entity.users import Users
+conn = Connection()
+conn.register([Users])
+database = conn.mydatabase
+collection = database.users
+
 class AuthController(object):
 
     def post_signup(self):
@@ -12,7 +19,9 @@ class AuthController(object):
         if not data:
             abort(400, 'No data received')
         entitypost = json.loads(data)
-        result = db['users'].find_one({'username': entitypost['username'], 'password': entitypost['password']})
+
+        result = collection.Users.find_one({'username': entitypost['username'], 'password': entitypost['password']})
+
         if not result:
             entity = {
                 '_id': uuid4().hex,
@@ -22,7 +31,7 @@ class AuthController(object):
                 'username' : entitypost['username'],
                 'password' : entitypost['password']
             }
-            db['users'].save(entity)
+            collection.Users.save(entity)
         else:
             return {'status': 'OK'}
 
@@ -35,7 +44,7 @@ class AuthController(object):
         if not data:
             abort(400, 'No data received')
         entitypost = json.loads(data)
-        entity = db['users'].find_one({'username': entitypost['username'], 'password': entitypost['password']})
+        entity = collection.Users.find_one({'username': entitypost['username'], 'password': entitypost['password']})
         if not entity:
             abort(404, 'No document with username = %s and password = %s' %  (entitypost['username'], entitypost['password']) )
         else:
@@ -50,7 +59,7 @@ class AuthController(object):
     def get_auth_token(self):
         auth = request.headers.get('Authorization')
         username, password = parse_auth(auth)
-        entity = db['users'].find_one({'username': username, 'password': password})
+        entity = collection.Users.find_one({'username': username, 'password': password})
         base_hash = hashlib.sha224(entity['app_key'] + entity['private_key']).hexdigest()
         token = generate_auth_token(hashlib.sha224(base_hash).hexdigest())
         protected_token = token.decode('ascii') + ':' + entity['private_key'] + ':' + entity['public_key']

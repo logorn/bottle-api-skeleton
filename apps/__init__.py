@@ -4,7 +4,6 @@ import json
 import bottle
 from bottle import Bottle, response, HTTPError, request, abort, auth_basic, parse_auth
 from uuid import uuid4
-from pymongo import Connection
 from bson import json_util
 from beaker.middleware import SessionMiddleware
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, SignatureExpired, BadSignature
@@ -16,8 +15,6 @@ import hashlib
 
 logging.basicConfig(filename='data/logs/app.log',level=logging.DEBUG)
 
-connection = Connection('localhost', 27017)
-db = connection.mydatabase
 app = Bottle()
 
 session_opts = {
@@ -31,6 +28,19 @@ SECRET_KEY = 'ffnnjeFpCtMd737NExBYhjodub3fpED2uZw03TNkhaA5cac3297f0d9f46e1gh3k83
 SECRET_AUTH_KEY = 'ffnnjeFpCtMd737NExBYhjodub3fpED2'
 
 token_expiration = 31536000 # 365 J
+
+# configuration
+MONGODB_HOST = 'localhost'
+MONGODB_PORT = 27017
+
+# connect to the database
+from mongokit import Connection as mongokiConnection
+from library.bas.entity.users import Users
+
+conn = mongokiConnection()
+conn.register([Users])
+database = conn.mydatabase
+UsersCollection = database.users
 
 BS = 32
 pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
@@ -59,7 +69,7 @@ def verify_auth_token(auth_public_key, auth_protected_token):
         token, private_key, public_key = raw_protected_data.split(':',2)
     except:
         return None
-    entity = db['users'].find_one({'public_key': public_key, 'private_key': private_key})
+    entity = UsersCollection.Users.find_one({'public_key': public_key, 'private_key': private_key})
     if not entity:
         return None
     if not (auth_public_key == entity['public_key']):
@@ -79,7 +89,7 @@ def check_pass(username, password):
     if auth:
         username, password = parse_auth(auth)
     if not result:
-        entity = db['users'].find_one({'username': username, 'password': password})
+        entity = UsersCollection.Users.find_one({'username': username, 'password': password})
         if not entity:
             return False
     return True

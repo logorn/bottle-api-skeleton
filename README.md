@@ -50,6 +50,7 @@ Installation application and dependencies:
     mkvirtualenv -p /usr/bin/python2.7 bottle-api-skeleton
     pip install -e .
     pip install -e ."[contribute]"
+    workon bottle-api-skeleton
 
 Run server:
 ----------

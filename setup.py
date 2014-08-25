@@ -49,7 +49,8 @@ setup(
         'Crypto',
         'requests',
         'simplejson',
-        'pycrypto'
+        'pycrypto',
+        'mongokit'
     ],
     tests_require=['pytest', 'mock'],
     extras_require={
