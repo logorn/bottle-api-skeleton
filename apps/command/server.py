@@ -18,9 +18,6 @@ from apps.settings import Settings, __version__
 from ..bootstrap import bootstrap
 
 class Server():
-    """Command-line interface for DWH to run Worker listening on Bus
-    """
-
     def __init__(self):
         """Class instantiation.
 
