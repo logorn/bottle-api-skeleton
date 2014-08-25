@@ -22,6 +22,7 @@ The aim is to bottle covered the basics of setting up a project to rest beings p
 * token and public key with token authentication
 * multithread using gevent
 * token are encrypted
+* use orm mongokit and extend pymongo
 
 Requirements
 ------------
