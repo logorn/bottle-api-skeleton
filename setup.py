@@ -50,7 +50,9 @@ setup(
         'requests',
         'simplejson',
         'pycrypto',
-        'mongokit'
+        'mongokit',
+        'inject >1.0, <1.1',
+        'argparse'
     ],
     tests_require=['pytest', 'mock'],
     extras_require={

@@ -1,12 +1,13 @@
+# -*- coding: utf-8 -*-
 
-from apps.bootstrap import connection
+from mongokit import Connection
 from library.bas.entity.users import Users
 
-class Users(object):
+conn = Connection()
+conn.register([Users])
+
+class Users(Users):
     """"""
     def __init__(self):
-        connection.register([Users])
-        self.collection = connection['mydatabase'].users
-
-    def getCollection(self):
-        return connection['mydatabase']
+        database = conn.mydatabase
+        self.repository = database.users
